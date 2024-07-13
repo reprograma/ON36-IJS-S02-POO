@@ -29,14 +29,17 @@ O que veremos na aula de hoje?
 
 - [Conteúdo](#conteúdo)
 
-  - [Exemplo](#exemplo)
-    - [O que são e para que servem ](#o-que-são-e-para-que-servem)
-    - [Benefícios](#benefícios)
-    - [Abordagens](#abordagens)
-    - [Implementação](#implementação)
+  - [Programação Orientada a Objetos Usando Typescript](#programação-orientada-a-objetos-usando-typescript)
+    - [Classes ](#classes)
+    - [Herança](#herança)
+    - [Herança Multipla](#herança-multipla)
+    - [Superclasse e Subclasse](#superclasse-e-subclasse)
+    - [Sobrescrita de métodos em subclasses em TypeScript](#sobrescrita-de-métodos-em-subclasses-em-typescript)
+    - [Mixins](#mixins)
+    - [Mixins e Interfaces](#mixins-e-interfaces)
+    - [Quando usar mixins e quando usar interface?](#)
+    - [Impacto na Performance](#)
   
-  - [Outro Exemplo](#outro-exemplo)
-    - [ETCETC](#etcetc)
 
   - [Exercícios](#exercícios)
   - [Material da aula](#material-da-aula)
@@ -45,7 +48,6 @@ O que veremos na aula de hoje?
 # Conteúdo
 
 ## Programação Orientada a Objetos Usando Typescript
-  #### O que são e para que servem
 A programação orientada a objetos (POO) em TypeScript segue os mesmos princípios básicos de outras linguagens orientadas a objetos, como a definição de classes, herança, polimorfismo e encapsulamento.
 Em TypeScript, uma classe é definida usando a palavra-chave class e pode conter propriedades (atributos) e métodos. Os objetos são instâncias dessas classes, criados usando o operador new.
 Por exemplo, podemos criar uma classe Pessoa com propriedades nome e idade, e um método apresentar() que exibe essas informações:
@@ -107,10 +109,12 @@ Este diagrama apresenta uma superclasse com atributos nome e idade, e métodos m
 A seta para cima, que representa a palavra reservada extends indica que Subclasse1 e Subclasse2 são subclasses da superclasse. Para essa ideia do extends fazer mais sentido, vamos dizer que “a Subclasse2 estende(extends) os métodos e atributos da Superclasse”, que representado em código, seria 
 class Subclasse1 extends Superclasse. O símbolo 1..* indica que uma superclasse pode ter várias subclasses.
 
+#### Herança Multipla
 TypeScript não suporta herança múltipla de classes diretamente. Isso significa que uma classe não pode estender de múltiplas classes ao mesmo tempo.
 No entanto, TypeScript oferece suporte a herança única e herança multinível. Uma classe pode estender de outra classe e herdar seus métodos e propriedades.
 Embora TypeScript não permita herança múltipla de classes, é possível simular esse comportamento usando interfaces: uma classe pode implementar múltiplas interfaces, cada uma contendo métodos e propriedades específicas.
-Além disso, é possível usar o padrão de projeto Mixin em TypeScript para obter um comportamento semelhante à herança múltipla. Isso envolve combinar múltiplas classes em uma única classe usando funções.
+
+Além disso, é possível usar o padrão de projeto Mixin em TypeScript para obter um comportamento semelhante à herança múltipla. Isso envolve combinar múltiplas classes em uma única classe usando funções:
 
 ```typescript
 // Interface para a classe Pessoa
@@ -170,16 +174,160 @@ console.log(leitor.nome); // Output: Maria
 console.log(leitor.livro); // Output: Livro de Leitor
 ```
 
-  #### Abordagens
-  [CONTEUDO]
+Neste exemplo, as classes Autor e Leitor estendem a classe PessoaBase, que implementa a interface Pessoa. As classes Autor e Leitor também implementam suas próprias interfaces, Autor e Leitor, que estendem a interface Pessoa.
+Isso permite que as classes Autor e Leitor herdem métodos e propriedades da classe PessoaBase e também implementem métodos e propriedades adicionais definidos nas suas próprias interfaces.
 
-  #### Implementação
-  [CONTEUDO]
+Embora isso não seja exatamente herança múltipla, é uma abordagem que permite a combinação de comportamentos de múltiplas interfaces em uma única classe.
 
-## Outro Exemplo
-   #### ETCETC
-   [CONTEUDO]
+De curiosidade, você pode encontrar herança múltipla em linguagens de programação como  C++ e Swift, porém,  a herança múltipla pode gerar complexidades e ambiguidades no código, o que levou linguagens modernas, como o Java ou Typescript a optarem por não suportar esse recurso.
 
+#### Superclasse e Subclasse
+
+##### Superclasse
+Em TypeScript, a definição de uma superclasse é muito similar à definição em Java:
+
+```Typescript
+class Animal {
+  protected name: string;
+  private age: number;
+
+  constructor(name: string, age: number) {
+    this.name = name;
+    this.age = age;
+  }
+
+  speak() {
+    console.log(`${this.name} faz um som.`);
+  }
+}
+```
+Neste exemplo, a classe Animal é a superclasse. Ela possui:
+Propriedades name (protegida) e age (privada)
+Um construtor que inicializa essas propriedades
+Um método speak() que imprime uma mensagem
+
+##### Subclasse
+As subclasses em TypeScript são definidas usando a palavra-chave extends após o nome da classe, seguida do nome da superclasse:
+
+```Typescript
+class Dog extends Animal {
+  private breed: string;
+
+  constructor(name: string, age: number, breed: string) {
+    super(name, age);
+    this.breed = breed;
+  }
+
+  speak() {
+    console.log(`${this.name} late.`);
+  }
+}
+```
+Neste exemplo, a classe Dog é uma subclasse de Animal. Ela:
+Herda as propriedades name (protegida) e age (privada) da superclasse Animal
+Possui uma propriedade adicional breed (privada)
+Possui um construtor que chama o construtor da superclasse usando super(name, age) e inicializa a propriedade breed
+Sobrescreve o método speak() da superclasse, fornecendo uma implementação específica para cães
+
+##### Sobrescrita de métodos em subclasses em TypeScript 
+
+Em TypeScript, a sobrescrita de métodos em subclasses é feita de maneira semelhante a outras linguagens orientadas a objetos, como Java e C#. Aqui estão os principais pontos sobre como realizar a sobrescrita de métodos em TypeScript:
+Declaração do Método na Superclasse: O método que será sobrescrito deve ser declarado na superclasse. Ele pode ter qualquer modificador de acesso (público, protegido ou privado).
+Declaração do Método na Subclasse: Na subclasse, você declara um método com o mesmo nome e assinatura (parâmetros e tipo de retorno) do método da superclasse que você deseja sobrescrever.
+Uso da Palavra-Chave override: Opcionalmente, você pode usar a palavra-chave override na declaração do método na subclasse para indicar que está sobrescrevendo um método da superclasse.
+
+```Typescript
+class Animal {
+  protected name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+
+  speak(): void {
+    console.log(`${this.name} faz um som.`);
+  }
+}
+
+class Dog extends Animal {
+  constructor(name: string) {
+    super(name);
+  }
+
+  override speak(): void {
+    console.log(`${this.name} late.`);
+  }
+}
+
+const dog = new Dog('Rex');
+dog.speak(); // Output: "Rex late."
+```
+#### Mixins
+A prática de usar mixins em TypeScript é considerada uma abordagem válida e recomendada em determinados cenários, embora não seja a única solução disponível.
+Vantagens do uso de mixins em TypeScript:
+- Flexibilidade: Mixins permitem que você combine comportamentos de múltiplas classes em uma única classe, o que pode ser útil quando você precisa de funcionalidades de diferentes fontes.
+- Reusabilidade: Ao encapsular comportamentos em mixins, você pode reutilizar esses comportamentos em diferentes classes, promovendo a modularidade e a reutilização de código.
+- Evita herança múltipla: Como TypeScript não suporta herança múltipla de classes, os mixins fornecem uma alternativa para alcançar um comportamento semelhante.
+Composição sobre herança: Os mixins seguem o princípio de "composição sobre herança", o que é geralmente considerado uma abordagem mais flexível e escalável.
+Entretanto, é importante considerar algumas considerações ao usar mixins em TypeScript:
+- Complexidade: A implementação de mixins pode tornar o código mais complexo, especialmente em casos mais avançados. É importante manter a simplicidade e a legibilidade do código.
+- Ordem de aplicação: A ordem em que os mixins são aplicados pode afetar o comportamento final da classe. Isso requer cuidado e entendimento do fluxo de execução.
+Tipagem: A tipagem de classes que utilizam mixins pode ser mais desafiadora, pois você precisa lidar com a composição de tipos.
+Portanto, a prática de usar mixins em TypeScript é recomendada, especialmente em situações em que a herança múltipla de classes seria benéfica, mas não é suportada nativamente pela linguagem. No entanto, é importante avaliar cuidadosamente os trade-offs e manter o código organizado e legível.
+
+##### Mixins e Interfaces
+
+Os mixins em TypeScript se comportam de maneira diferente das interfaces, embora ambos sejam usados para estender e compor funcionalidades em classes. Aqui estão as principais diferenças:
+- Herança vs Composição:
+  Interfaces definem um contrato que classes devem seguir, mas não adicionam implementação.
+  Mixins adicionam implementação e comportamento a uma classe, usando composição em vez de herança.
+- Múltipla Herança:
+  Interfaces permitem que uma classe implemente múltiplas interfaces, simulando herança múltipla.
+  Mixins permitem que uma classe "herde" de múltiplas classes, fornecendo uma alternativa à herança múltipla, que não é suportada nativamente em TypeScript.
+- Flexibilidade:
+  Mixins oferecem mais flexibilidade, pois permitem combinar comportamentos de diferentes classes em uma única classe.
+  Interfaces são mais rígidas, pois definem apenas a forma que uma classe deve ter, sem adicionar implementação.
+- Complexidade:
+  O uso de mixins pode tornar o código mais complexo, especialmente quando há muitas camadas de composição.
+  Interfaces tendem a manter o código mais simples e legível, pois apenas definem contratos.
+- Tipagem:
+  Interfaces são mais fáceis de tipar, pois apenas definem a forma de um objeto.
+  Mixins podem exigir um esforço maior na definição de tipos, especialmente quando há composição de múltiplos mixins.
+
+##### Quando usar Mixins e quando usar interfaces?
+
+Interfaces são geralmente mais recomendadas do que mixins em TypeScript nas seguintes situações:
+- Definição de Contratos: Interfaces são ideais para definir contratos ou "formas" de objetos, especificando quais propriedades e métodos devem estar presentes. Isso ajuda a garantir a consistência e a interoperabilidade entre diferentes partes do código.
+- Simplicidade e Legibilidade: Interfaces tendem a manter o código mais simples e legível, pois apenas definem a estrutura de um objeto, sem adicionar implementação. Isso pode ser preferível em situações em que a complexidade deve ser minimizada.
+- Tipagem Mais Simples: A tipagem de código que usa interfaces é geralmente mais simples e direta do que a tipagem de código que usa mixins, que pode exigir mais esforço na definição de tipos compostos.
+- Herança Múltipla de Tipos: Interfaces permitem que uma classe implemente múltiplas interfaces, o que simula a herança múltipla de tipos. Isso pode ser mais adequado do que usar mixins, especialmente quando não há necessidade de adicionar implementação.
+- Compatibilidade com Bibliotecas Externas: Quando você está trabalhando com bibliotecas externas que esperam tipos definidos por interfaces, é mais natural e compatível usar interfaces em vez de mixins.
+- 
+Por outro lado, mixins são mais recomendados em situações em que você precisa compor comportamentos de múltiplas classes em uma única classe, especialmente quando a herança múltipla de classes seria benéfica, mas não é suportada nativamente em TypeScript.
+
+Algumas situações em que mixins podem ser mais apropriados do que interfaces:
+- Composição de Comportamentos: Quando você precisa combinar funcionalidades de múltiplas classes em uma única classe, os mixins oferecem uma abordagem mais flexível do que a herança tradicional.
+- Reutilização de Código: Mixins permitem encapsular e reutilizar comportamentos em diferentes classes, promovendo a modularidade e a reutilização de código.
+- Necessidade de Implementação Adicional: Quando você precisa adicionar implementação específica a uma classe, além de apenas definir sua estrutura, os mixins podem ser uma solução mais adequada do que as interfaces.
+
+##### Impacto em Performance
+
+A escolha entre interfaces e mixins em TypeScript pode ter impactos na performance do código, embora esses impactos geralmente sejam pequenos. Aqui estão alguns pontos a considerar:
+- Complexidade do Código:
+  Interfaces tendem a manter o código mais simples e legível, o que pode melhorar a performance geral, pois o compilador e o interpretador têm menos código para processar.
+  Mixins podem tornar o código mais complexo, especialmente quando há muitas camadas de composição. Essa complexidade adicional pode ter um impacto leve na performance.
+- Tempo de Compilação:
+  O uso de interfaces geralmente resulta em um tempo de compilação mais rápido, pois elas são mais simples e fáceis de processar pelo compilador.
+  Mixins podem aumentar o tempo de compilação, especialmente quando há muitas classes sendo compostas.
+- Tamanho do Código Gerado:
+  Interfaces adicionam pouco ou nenhum código extra ao resultado final, mantendo o tamanho do código gerado pequeno.
+  Mixins podem gerar mais código, pois eles precisam adicionar a implementação dos métodos e propriedades compostos à classe final.
+- Otimização do Interpretador:
+  Interfaces tendem a ser mais fáceis de otimizar pelo interpretador, pois sua estrutura é mais simples e previsível.
+  Mixins podem dificultar a otimização do interpretador, pois a composição de comportamentos pode criar estruturas mais complexas.
+  
+É importante notar que, em geral, esses impactos na performance são relativamente pequenos e podem ser negligenciáveis em muitos casos. A escolha entre interfaces e mixins deve ser feita com base na legibilidade, flexibilidade e manutenibilidade do código, em vez de focar apenas na performance.
+Além disso, existem técnicas e configurações do compilador TypeScript que podem ajudar a mitigar alguns desses impactos, como o uso de --extendedDiagnostics para identificar gargalos de performance e a configuração de opções como strictFunctionTypes para melhorar a solidez do sistema de tipos.
 
 ***
 ### Exercícios 
