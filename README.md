@@ -35,10 +35,13 @@ O que veremos na aula de hoje?
     - [Herança Multipla](#herança-multipla)
     - [Superclasse e Subclasse](#superclasse-e-subclasse)
     - [Sobrescrita de métodos em subclasses em TypeScript](#sobrescrita-de-métodos-em-subclasses-em-typescript)
+    - [União de Tipos](#união-de-tipos-union-types)
+    - [Parâmetros Opcionais](#parametros-opcionais)
     - [Mixins](#mixins)
     - [Mixins e Interfaces](#mixins-e-interfaces)
     - [Quando usar mixins e quando usar interface?](#)
     - [Impacto na Performance](#)
+    - [Rodando um arquivo Typescript]()
   
 
   - [Exercícios](#exercícios)
@@ -262,6 +265,88 @@ class Dog extends Animal {
 const dog = new Dog('Rex');
 dog.speak(); // Output: "Rex late."
 ```
+Em TypeScript, não é possível fazer sobrecarga de métodos, como é comum em linguagens como Java ou C#. Isso significa que você não pode ter múltiplas assinaturas de método com o mesmo nome, mas com diferentes parâmetros.
+Por exemplo, se você tiver um método speak() na classe Animal, você não pode ter outro método speak() na mesma classe com parâmetros diferentes. Isso é porque TypeScript não permite que você tenha múltiplas assinaturas de método com o mesmo nome.
+Em vez disso, você pode usar a abordagem de união de tipos (union types) ou parâmetros opcionais para lidar com diferentes assinaturas de método.
+
+##### União de Tipos (Union Types)
+A união de tipos permite que você defina um tipo que pode ser qualquer um dos tipos especificados. Por exemplo, você pode definir um método speak() que aceita tanto uma string quanto um número:
+
+```Typescript
+class Animal {
+  speak(message: string | number) {
+    console.log(message);
+  }
+}
+```
+Neste exemplo, o método speak() aceita qualquer uma das seguintes assinaturas:
+  speak("Hello")
+  speak(42)
+
+A união de tipos (union types) em TypeScript permite que uma variável ou parâmetro possa receber valores de múltiplos tipos diferentes. Isso é útil quando você precisa lidar com valores que podem ter diferentes tipos em diferentes situações.
+Para definir uma união de tipos, você usa o operador | entre os tipos desejados. Por exemplo:
+
+```Typescript
+let value: string | number;
+```
+Neste exemplo, a variável value pode receber tanto valores do tipo string quanto do tipo number.
+Quando você usa uma variável com um tipo união, o TypeScript assume que ela pode ser qualquer um dos tipos especificados. Isso significa que você só pode acessar os membros (propriedades e métodos) que são comuns a todos os tipos da união.
+
+```Typescript
+function printLength(value: string | number) {
+  console.log(value.length); // Erro: A propriedade 'length' não existe em tipo 'string | number'
+}
+```
+Neste caso, ocorre um erro porque não existe uma propriedade length comum a string e number. Para acessar a propriedade length, você precisa primeiro verificar o tipo do valor:
+
+```Typescript
+function printLength(value: string | number) {
+  if (typeof value === 'string') {
+    console.log(value.length); // OK, porque value é do tipo string
+  } else {
+    console.log('Não é uma string');
+  }
+}
+```
+Aqui, usamos o operador typeof para verificar o tipo de value e, em seguida, acessamos a propriedade length apenas quando value é do tipo string.
+Outra forma de lidar com tipos união é usando o operador in para verificar se um objeto tem uma propriedade específica:
+
+```Typescript
+interface Bird {
+  fly(): void;
+}
+
+interface Fish {
+  swim(): void;
+}
+
+function move(animal: Bird | Fish) {
+  if ('fly' in animal) {
+    animal.fly(); // OK, porque animal tem o método fly()
+  } else {
+    animal.swim(); // OK, porque animal tem o método swim()
+  }
+}
+```
+Neste exemplo, a função move() aceita um parâmetro animal que pode ser tanto do tipo Bird quanto do tipo Fish. Dentro da função, usamos o operador in para verificar se animal tem a propriedade fly. Se tiver, chamamos o método fly(); caso contrário, chamamos o método swim().
+
+##### Parâmetros Opcionais
+Outra abordagem é usar parâmetros opcionais. Isso permite que você defina um método com um parâmetro opcional, que pode ser omitido ou fornecido. Por exemplo:
+
+```Typescript
+class Animal {
+  speak(message?: string) {
+    if (message) {
+      console.log(message);
+    } else {
+      console.log("Silêncio...");
+    }
+  }
+}
+```
+Neste exemplo, o método speak() tem um parâmetro opcional message. Se você chamar o método sem fornecer um valor para message, o método imprimirá "Silêncio...". Se você fornecer um valor para message, o método imprimirá esse valor.
+Essas abordagens permitem que você trabalhe com diferentes assinaturas de método em TypeScript, sem a necessidade de sobrecarga de métodos.
+
 #### Mixins
 A prática de usar mixins em TypeScript é considerada uma abordagem válida e recomendada em determinados cenários, embora não seja a única solução disponível.
 Vantagens do uso de mixins em TypeScript:
@@ -328,6 +413,49 @@ A escolha entre interfaces e mixins em TypeScript pode ter impactos na performan
   
 É importante notar que, em geral, esses impactos na performance são relativamente pequenos e podem ser negligenciáveis em muitos casos. A escolha entre interfaces e mixins deve ser feita com base na legibilidade, flexibilidade e manutenibilidade do código, em vez de focar apenas na performance.
 Além disso, existem técnicas e configurações do compilador TypeScript que podem ajudar a mitigar alguns desses impactos, como o uso de --extendedDiagnostics para identificar gargalos de performance e a configuração de opções como strictFunctionTypes para melhorar a solidez do sistema de tipos.
+
+#### Rodando um arquivo Typescript
+Para rodar um arquivo TypeScript pela primeira vez, você precisa seguir alguns passos. Vamos supor que você tenha um arquivo chamado app.ts com o seguinte código:
+
+```Typescript
+console.log("Hello, TypeScript!");
+```
+
+Instale o Node.js: TypeScript é uma linguagem que compila para JavaScript, então você precisa ter o Node.js instalado em sua máquina. Você pode baixá-lo no site oficial: https://nodejs.org/
+Instale o TypeScript globalmente: Abra o terminal ou prompt de comando e execute o seguinte comando:
+
+```Bash
+npm install -g typescript
+```
+
+Isso instalará o compilador TypeScript globalmente em sua máquina.
+Compile o arquivo TypeScript: No terminal, navegue até o diretório onde seu arquivo app.ts está localizado e execute o seguinte comando:
+
+```Bash
+tsc app.ts
+```
+
+Isso irá compilar o arquivo TypeScript e gerar um arquivo JavaScript correspondente chamado app.js.
+Execute o arquivo JavaScript: Agora você pode executar o arquivo JavaScript gerado usando o Node.js:
+
+```Bash
+node app.js
+```
+
+Isso irá executar o código JavaScript e exibir a mensagem "Hello, TypeScript!" no console.
+Alternativamente, você pode usar o comando tsc para compilar o arquivo TypeScript e, em seguida, usar o Node.js para executá-lo em uma única linha:
+
+```Bash
+tsc app.ts && node app.js
+```
+
+Isso irá compilar o arquivo TypeScript e, em seguida, executar o arquivo JavaScript gerado.
+
+Observações adicionais:
+Se você tiver um arquivo TypeScript com erros, o compilador tsc irá exibir mensagens de erro no console.
+Você pode configurar o TypeScript para gerar um arquivo JavaScript com um nome diferente usando a opção -out ou -o.
+O TypeScript também suporta a compilação de múltiplos arquivos de uma só vez.
+Lembrando que esses são os passos básicos para rodar um arquivo TypeScript pela primeira vez, o básico do básico. À medida que seu projeto cresce, você pode configurar um ambiente de desenvolvimento mais avançado com ferramentas como um bundler (como Webpack ou Rollup) e um servidor de desenvolvimento (como o webpack-dev-server).
 
 ***
 ### Exercícios 
