@@ -39,9 +39,12 @@ O que veremos na aula de hoje?
     - [Parâmetros Opcionais](#parametros-opcionais)
     - [Mixins](#mixins)
     - [Mixins e Interfaces](#mixins-e-interfaces)
-    - [Quando usar mixins e quando usar interface?](#)
-    - [Impacto na Performance](#)
-    - [Rodando um arquivo Typescript]()
+    - [Quando usar mixins e quando usar interface?](quando-usar-mixins-e-quando-usar-interface)
+    - [Impacto na Performance](#impacto-na-performance)
+    - [Rodando um arquivo Typescript](#roando-um-arquivo-typescript)
+    - [Sobrescrita de métodos em subclasses em TypeScript](#sobrescrita-de-métodos-em-subclasses-em-typeScript)
+    - [União de Tipos (Union Types)](#união-de-tipos-(union-types-))
+    - [Parametros Opcionais](#parametros-opcionais)
   
 
   - [Exercícios](#exercícios)
@@ -456,6 +459,82 @@ Se você tiver um arquivo TypeScript com erros, o compilador tsc irá exibir men
 Você pode configurar o TypeScript para gerar um arquivo JavaScript com um nome diferente usando a opção -out ou -o.
 O TypeScript também suporta a compilação de múltiplos arquivos de uma só vez.
 Lembrando que esses são os passos básicos para rodar um arquivo TypeScript pela primeira vez, o básico do básico. À medida que seu projeto cresce, você pode configurar um ambiente de desenvolvimento mais avançado com ferramentas como um bundler (como Webpack ou Rollup) e um servidor de desenvolvimento (como o webpack-dev-server).
+
+#### Sobrescrita de métodos em subclasses em TypeScript
+
+Em TypeScript, a sobrescrita de métodos em subclasses é feita de maneira semelhante a outras linguagens orientadas a objetos, como Java e C#. Aqui estão os principais pontos sobre como realizar a sobrescrita de métodos em TypeScript:
+- Declaração do Método na Superclasse: O método que será sobrescrito deve ser declarado na superclasse. Ele pode ter qualquer modificador de acesso (público, protegido ou privado).
+- Declaração do Método na Subclasse: Na subclasse, você declara um método com o mesmo nome e assinatura (parâmetros e tipo de retorno) do método da superclasse que você deseja sobrescrever.
+- Uso da Palavra-Chave override: Opcionalmente, você pode usar a palavra-chave override na declaração do método na subclasse para indicar que está sobrescrevendo um método da superclasse.
+
+```Typescript
+class Animal {
+  protected name: string;
+
+  constructor(name: string) {
+    this.name = name;
+  }
+
+  speak(): void {
+    console.log(`${this.name} faz um som.`);
+  }
+}
+
+class Dog extends Animal {
+  constructor(name: string) {
+    super(name);
+  }
+
+  override speak(): void {
+    console.log(`${this.name} late.`);
+  }
+}
+
+const dog = new Dog('Rex');
+dog.speak(); // Output: "Rex late."
+```
+Neste exemplo:
+A classe Animal é a superclasse, com um método speak().
+A classe Dog é a subclasse, que sobrescreve o método speak() da superclasse.
+O uso da palavra-chave override é opcional, mas ajuda a deixar o código mais claro.
+Quando chamamos dog.speak(), o método sobrescrito da subclasse é executado.
+
+É importante notar que, em TypeScript, não é possível fazer sobrecarga de métodos (múltiplas assinaturas de método com o mesmo nome, mas com diferentes parâmetros). Em vez disso, você deve usar a abordagem de união de tipos (union types) ou parâmetros opcionais.
+
+Explicando melhor, emTypeScript não é possível fazer sobrecarga de métodos, como é comum em linguagens como Java ou C#. Isso significa que você não pode ter múltiplas assinaturas de método com o mesmo nome, mas com diferentes parâmetros.
+Por exemplo, se você tiver um método speak() na classe Animal, você não pode ter outro método speak() na mesma classe com parâmetros diferentes. Isso é porque TypeScript não permite que você tenha múltiplas assinaturas de método com o mesmo nome.
+Em vez disso, você pode usar a abordagem de união de tipos (union types) ou parâmetros opcionais para lidar com diferentes assinaturas de método.
+
+#### União de Tipos (Union Types)
+A união de tipos permite que você defina um tipo que pode ser qualquer um dos tipos especificados. Por exemplo, você pode definir um método speak() que aceita tanto uma string quanto um número:
+
+```Typescript
+class Animal {
+  speak(message: string | number) {
+    console.log(message);
+  }
+}
+```
+Neste exemplo, o método speak() aceita qualquer uma das seguintes assinaturas:
+speak("Hello")
+speak(42)
+
+#### Parametros Opcionais
+Outra abordagem é usar parâmetros opcionais. Isso permite que você defina um método com um parâmetro opcional, que pode ser omitido ou fornecido. Por exemplo:
+
+```Typescript
+class Animal {
+  speak(message?: string) {
+    if (message) {
+      console.log(message);
+    } else {
+      console.log("Silêncio...");
+    }
+  }
+}
+```
+Neste exemplo, o método speak() tem um parâmetro opcional message. Se você chamar o método sem fornecer um valor para message, o método imprimirá "Silêncio...". Se você fornecer um valor para message, o método imprimirá esse valor.
+Essas abordagens permitem que você trabalhe com diferentes assinaturas de método em TypeScript, sem a necessidade de sobrecarga de métodos.
 
 ***
 ### Exercícios 
