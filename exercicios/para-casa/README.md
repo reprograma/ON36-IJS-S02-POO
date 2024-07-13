@@ -1,19 +1,36 @@
-# Exercício de Casa 🏠 
+# Desafio Semanal 🏠 
 
-## Nome do Exercicio
+![Tarefa](/Archive/99.%20Recursos/01.%20Imagens/tags/atividade-exercicio.svg)
 
-- Explicação do exercício: 
-[CONTEUDO] 
----
+### Objetivos de aprendizagem do desafio 🎯
 
-Terminou o exercício? Dá uma olhada nessa checklist e confere se tá tudo certinho, combinado?!
+- Compreensão dos princípios da Programação Orientada a Objetos (POO), como abstração, encapsulamento, herança e polimorfismo.
+- Prática na implementação de classes abstratas, interfaces e classes concretas.
+- Experiência em criar e manipular hierarquias de classes para modelar sistemas.
+- Aprendizado sobre a relação entre diferentes classes e como elas se interconectam para formar um sistema coeso.
+- Desenvolvimento de habilidades na escrita e organização de código legível e modular.
+- Reforço da compreensão sobre como diagramas podem ser úteis para visualizar a estrutura e o relacionamento entre classes em um sistema.
 
-- [ ] Fiz o fork do repositório.
-- [ ] Clonei o fork na minha máquina (`git clone url-do-meu-fork`).
-- [ ] Criei minha branch (` git checkout -b nome-sobrenome `)
-- [ ] Criei a pasta com o meu nome dentro da pasta entregas (` mkdir nome-sobrenome`)
-- [ ] Resolvi o exercício dentro da minha pasta. Como no [exemplo](/on21-imersao-js-S1-TDD/exercicios/para-casa/entregas/exemplo-nome-sobrenome/).
-- [ ] Adicionei as mudanças. (`git add .` para adicionar todos os arquivos, ou `git add nome_do_arquivo` para adicionar um arquivo específico)
-- [ ] Commitei a cada mudança significativa ou na finalização do exercício (`git commit -m "Mensagem do commit"`)
-- [ ] Pushei os commits na minha branch (`git push origin nome-da-branch`)
-- [ ] Criei um Pull Request seguindo as orientações que estao nesse [documento](/on21-imersao-js-S1-TDD/exercicios/para-casa/instrucoes-pull-request.md).
+
+<h2 align=center> {Reprograma}Bank </h2>
+  <h3>Enriquecendo o sistema com dados de Clientes</h3>
+
+
+Seu desafio é criar classes e interfaces apropriadas para representar clientes, suas contas bancárias e implementar métodos para interagir com esses dados, como criar uma nova conta para um cliente, depositar, sacar, transferir dinheiro entre contas, etc.
+
+Abaixo estão os requisitos:
+
+Cada cliente do banco deve ter as seguintes informações:
+
+- Nome completo
+- Número de identificação (ID)
+- Endereço
+- Número de telefone
+
+
+Requisitos de negócio:
+
+- Cada cliente pode ter uma ou mais contas bancárias. As contas podem ser do tipo Conta Corrente ou Conta Poupança.
+- Para a conta corrente, é necessário armazenar o limite do cheque especial.
+- Para a conta poupança, é necessário armazenar a taxa de juros.
+- As Contas podem fazer tranferencia e saque 
